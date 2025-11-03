@@ -1,16 +1,11 @@
-import SimpleITK
-import nibabel
-import numpy as np
 from batchgenerators.utilities.file_and_folder_operations import *
-import shutil
 from nnunetv2.dataset_conversion.generate_dataset_json import generate_dataset_json
 from nnunetv2.paths import nnUNet_raw
 
 
-
 if __name__ == '__main__':
-    base = '/scratch.global/lundq163/lifespan-model-training/nnUNet_raw/Dataset300_lifespan-mixed'
-    cases = subdirs(base, join=False)
+    base = '/scratch.global/lundq163/lifespan-model-training/nnUNet_raw/Dataset300_lifespan-mixed/imagesTr'
+    cases = subfiles(base, join=False)
 
     target_dataset_id = 300
     target_dataset_name = f'Dataset{target_dataset_id:3.0f}_lifespan-mixed'
@@ -21,7 +16,7 @@ if __name__ == '__main__':
     maybe_mkdir_p(imagesTr)
     maybe_mkdir_p(labelsTr)
     labels = {
-    "Background": 0,
+    "background": 0,
     "unknown-1": 1,
     "Left-Cerebral-White-Matter": 2,
     "Left-Cerebral-Cortex": 3,
@@ -202,7 +197,8 @@ if __name__ == '__main__':
         labels,
         len(cases),
         '.nii.gz',
-        release='1.0.0'#,
-        #reference='https://zenodo.org/records/11367005',
-        #license='see reference'
+        dataset_name=target_dataset_name,
+        description='Brain MRI segmentation with data from across the lifespan. T2s mixed in for younger subjects but referenced as T1s',
+        license='None currently',
+        converted_by='Jacob'
     )
